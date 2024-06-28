@@ -22,6 +22,10 @@ namespace PasswordManager.MVVM.View
         public LoginView()
         {
             InitializeComponent();
+            UpdateCapsLockState();
+
+            InputManager.Current.PreNotifyInput += OnPreNotifyInput;
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -40,6 +44,27 @@ namespace PasswordManager.MVVM.View
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void OnPreNotifyInput(object sender, NotifyInputEventArgs e)
+        {
+            if (e.StagingItem.Input is KeyEventArgs keyboardEvent)
+            {
+                if (keyboardEvent.Key == Key.CapsLock)
+                {
+                    UpdateCapsLockState();
+                }
+            }
+        }
+
+        private void UpdateCapsLockState()
+        {
+            CapsLockIcon.Visibility = Keyboard.IsKeyToggled(Key.CapsLock) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            UpdateCapsLockState();
         }
     }
 }

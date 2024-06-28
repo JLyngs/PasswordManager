@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordManager.MVVM.View"
+        xmlns:viewModel="clr-namespace:PasswordManager.MVVM.ViewModels"
         mc:Ignorable="d"
         Title="LoginView" Height="550" Width="800"
         WindowStyle="None"
@@ -12,6 +13,18 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown">
+    
+    <Window.DataContext>
+        <viewModel:LoginViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+    </Window.Resources>
+
+    <Window.Visibility>
+        <Binding Path="IsViewVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
+    </Window.Visibility>
 
     <Border CornerRadius="12">
         <Border.Background>
@@ -154,7 +167,10 @@
                                TextWrapping="Wrap"
                                TextAlignment="Center"
                                Margin="0,5,0,0"/>
+                    
 
+
+                    
                     <TextBlock Text="Username"
                                Foreground="DarkGray"
                                FontSize="12"
@@ -163,6 +179,7 @@
                                Margin="0,35,0,0"/>
 
                     <TextBox x:Name="txtUser"
+                             Text="{Binding Username}"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Montserrat"
@@ -183,14 +200,15 @@
                         
                     </TextBox>
 
+
                     <TextBlock Text="Password"
                                Foreground="DarkGray"
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Montserrat"
                                Margin="0,10,0,0"/>
-
-                    <PasswordBox x:Name="txtPass"
+                    <Grid>
+                        <PasswordBox x:Name="txtPass"                
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Montserrat"
@@ -201,6 +219,7 @@
                              Height="28"
                              VerticalContentAlignment="Center"
                              Margin="0,5,0,0"
+                             PasswordChanged="PasswordBox_PasswordChanged"
                              Padding="20,0,0,0">
 
                         <PasswordBox.Background>
@@ -208,8 +227,15 @@
                                         Stretch="None"
                                         AlignmentX="Left"/>
                         </PasswordBox.Background>
+                        
                     </PasswordBox>
-
+                    <Image x:Name="CapsLockIcon"
+                           Source="/Images/CapslockIcon.png"
+                           Height="20"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Visibility="Collapsed"/>
+                    </Grid>
                     <Button x:Name="BtnLogin"
                             BorderThickness="0"
                             Content="LOG IN"
