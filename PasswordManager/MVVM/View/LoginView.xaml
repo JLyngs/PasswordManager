@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordManager.MVVM.View"
-        xmlns:viewModel="clr-namespace:PasswordManager.MVVM.ViewModels"
+        xmlns:viewModel="clr-namespace:PasswordManager.MVVM.ViewModels" xmlns:customcontrols="clr-namespace:PasswordManager.CustomControls"
         mc:Ignorable="d"
         Title="LoginView" Height="550" Width="800"
         WindowStyle="None"
@@ -179,7 +179,7 @@
                                Margin="0,35,0,0"/>
 
                     <TextBox x:Name="txtUser"
-                             Text="{Binding Username}"
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                              FontSize="13"
                              FontWeight="Medium"
                              FontFamily="Montserrat"
@@ -206,37 +206,30 @@
                                FontSize="12"
                                FontWeight="Medium"
                                FontFamily="Montserrat"
-                               Margin="0,10,0,0"/>
-                    <Grid>
-                        <PasswordBox x:Name="txtPass"                
-                             FontSize="13"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"
-                             Foreground="White"
-                             CaretBrush="LightGray"
-                             BorderBrush="DarkGray"
-                             BorderThickness="0,0,0,1"
-                             Height="28"
-                             VerticalContentAlignment="Center"
-                             Margin="0,5,0,0"
-                             PasswordChanged="PasswordBox_PasswordChanged"
-                             Padding="20,0,0,0">
+                               Margin="0,15,0,0"/>
 
-                        <PasswordBox.Background>
-                            <ImageBrush ImageSource="/Images/PwIcon.png"
-                                        Stretch="None"
-                                        AlignmentX="Left"/>
-                        </PasswordBox.Background>
-                        
-                    </PasswordBox>
+                        <customcontrols:BindablePasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"              
+                                                            Height="28"
+                                                            Margin="0,5,0,0">
+
+                        </customcontrols:BindablePasswordBox>
                     <Image x:Name="CapsLockIcon"
                            Source="/Images/CapslockIcon.png"
                            Height="20"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Visibility="Collapsed"/>
-                    </Grid>
+
+                        <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#d7596d"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               Margin="0,10,0,0"
+                               TextWrapping="Wrap"/>
+
                     <Button x:Name="BtnLogin"
+                            Command="{Binding LoginCommand}"
                             BorderThickness="0"
                             Content="LOG IN"
                             Foreground="White"
@@ -244,8 +237,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             Grid.Column="2"
-                            Margin="0,50,0,0"
-                            Click="BtnClose_Click">
+                            Margin="0,30,0,0">
 
                         <Button.Style>
                             <Style TargetType="Button">

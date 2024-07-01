@@ -1,10 +1,14 @@
-﻿using System;
+﻿using PasswordManager.MVVM.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using PasswordManager.Repositories;
+using System.Net;
+using System.Security.Principal;
 
 namespace PasswordManager.MVVM.ViewModels
 {
@@ -17,6 +21,7 @@ namespace PasswordManager.MVVM.ViewModels
         private string _errorMessage;
         private bool _isViewVisible = true;
 
+        private IUserRepository userRepository;
 
         //Properties
         public string Username 
@@ -79,6 +84,7 @@ namespace PasswordManager.MVVM.ViewModels
         //Constructor
         public LoginViewModel()
         {
+            userRepository = new UserRepository();
             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
             RecoverPasswordCommand = new ViewModelCommand(p=>ExecuteRecoverPassCommand("",""));
         }
@@ -97,7 +103,17 @@ namespace PasswordManager.MVVM.ViewModels
 
         private void ExecuteLoginCommand(object obj)
         {
-            throw new NotImplementedException();
+            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
+            if (isValidUser)
+            {
+                Thread.CurrentPrincipal =new GenericPrincipal(
+                    new GenericIdentity(Username), null);
+                IsViewVisible = false;
+            }
+            else
+            {
+                ErrorMessage = "* Invalid username or password";
+            }
         }
         private void ExecuteRecoverPassCommand(string username, string email)
         {
