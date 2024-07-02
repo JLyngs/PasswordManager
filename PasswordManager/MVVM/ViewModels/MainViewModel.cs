@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using PasswordManager.Repositories;
 using PasswordManager.MVVM.Model;
 using System.Windows;
+using FontAwesome.Sharp;
+using System.Windows.Input;
 
 namespace PasswordManager.MVVM.ViewModels
 {
@@ -13,6 +15,11 @@ namespace PasswordManager.MVVM.ViewModels
     {
         //Fields
         private UserAccountModel _currentUserAccount;
+        private ViewModelBase _currentChildView;
+        private string _caption;
+        private IconChar _icon;
+
+
         private IUserRepository userRepository;
 
         public UserAccountModel CurrentUserAccount
@@ -29,11 +36,96 @@ namespace PasswordManager.MVVM.ViewModels
             }
         }
 
+        public ViewModelBase CurrentChildView
+        {
+            get
+            {
+                return _currentChildView;
+            }
+            set
+            {
+                _currentChildView = value;
+                OnPropertyChanged(nameof(CurrentChildView));
+            }
+        }
+
+        public string Caption
+        {
+            get
+            {
+                return _caption;
+            }
+            set
+            {
+                _caption = value;
+                OnPropertyChanged(nameof(Caption));
+            }
+        }
+
+        public IconChar Icon
+        {
+            get
+            {
+                return _icon;
+            }
+            set
+            {
+                _icon = value;
+                OnPropertyChanged(nameof(Icon));
+            }
+        }
+
+        //--> Commands
+        public ICommand ShowHomeViewCommand { get; }
+        public ICommand ShowPasswordsViewCommand { get; }
+        public ICommand ShowUserSettingsViewCommand { get; }
+        public ICommand ShowUserAccountViewCommand { get; }
+
+        
+
         public MainViewModel()
         {
             userRepository = new UserRepository();
             CurrentUserAccount = new UserAccountModel();
+
+            //Initialize commands
+            ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            ShowPasswordsViewCommand = new ViewModelCommand(ExecuteShowPasswordsViewCommand);
+            ShowUserSettingsViewCommand = new ViewModelCommand(ExecuteShowUserSettingsViewCommand);
+            ShowUserAccountViewCommand = new ViewModelCommand(ExecuteShowUserAccountViewCommand);
+
+            //Default View
+            ExecuteShowHomeViewCommand(null);
+
             LoadCurrentUserData();
+        }
+
+        private void ExecuteShowUserAccountViewCommand(object obj)
+        {
+            CurrentChildView = new UserAccountViewModel();
+            Caption = "User Account";
+            Icon = IconChar.UserAlt;
+        }
+
+        private void ExecuteShowUserSettingsViewCommand(object obj)
+        {
+            CurrentChildView = new UserSettingsViewModel();
+            Caption = "User Settings";
+            Icon = IconChar.Cog;
+        }
+
+        private void ExecuteShowPasswordsViewCommand(object obj)
+        {
+            CurrentChildView = new UserPasswordsViewModel();
+            Caption = "User Passwords";
+            Icon = IconChar.Key;
+        }
+
+        private void ExecuteShowHomeViewCommand(object obj)
+        {
+            CurrentChildView = new HomeViewModel();
+            Caption = "Dashboard";
+            Icon = IconChar.Home;
         }
 
         private void LoadCurrentUserData()
@@ -42,7 +134,7 @@ namespace PasswordManager.MVVM.ViewModels
             if(user != null)
             {
                 CurrentUserAccount.Username = user.Username;
-                CurrentUserAccount.DisplayName = $"Welcome {user.Name} {user.LastName}";
+                CurrentUserAccount.DisplayName = $"{user.Name} {user.LastName}";
                 CurrentUserAccount.ProfilePicture = null;
             }
             else
