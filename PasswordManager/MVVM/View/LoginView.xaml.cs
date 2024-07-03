@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PasswordManager.MVVM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,6 +66,18 @@ namespace PasswordManager.MVVM.View
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             UpdateCapsLockState();
+        }
+
+        private void Login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var viewModel = DataContext as LoginViewModel;
+                if (viewModel != null && viewModel.LoginCommand.CanExecute(null))
+                {
+                    viewModel.LoginCommand.Execute(null);
+                }
+            }
         }
     }
 }
