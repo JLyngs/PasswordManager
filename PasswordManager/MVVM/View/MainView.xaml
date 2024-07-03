@@ -18,8 +18,8 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
-            <local:HomeView/>
+        <DataTemplate DataType="{x:Type viewModel:DashBoardViewModel}">
+            <local:DashBoardView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:UserPasswordsViewModel}">
@@ -87,7 +87,7 @@
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color1}"
                                  IsChecked="True"
-                                 Command="{Binding ShowHomeViewCommand}">
+                                 Command="{Binding ShowDashBoardViewCommand}">
                         
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>

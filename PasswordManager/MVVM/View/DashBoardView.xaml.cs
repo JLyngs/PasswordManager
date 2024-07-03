@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace PasswordManager.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for DashBoardView.xaml
     /// </summary>
-    public partial class HomeView : UserControl
+    public partial class DashBoardView : UserControl
     {
-        public HomeView()
+        public DashBoardView()
         {
             InitializeComponent();
         }

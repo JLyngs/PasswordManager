@@ -76,7 +76,7 @@ namespace PasswordManager.MVVM.ViewModels
         }
 
         //--> Commands
-        public ICommand ShowHomeViewCommand { get; }
+        public ICommand ShowDashBoardViewCommand { get; }
         public ICommand ShowPasswordsViewCommand { get; }
         public ICommand ShowUserSettingsViewCommand { get; }
         public ICommand ShowUserAccountViewCommand { get; }
@@ -89,13 +89,13 @@ namespace PasswordManager.MVVM.ViewModels
             CurrentUserAccount = new UserAccountModel();
 
             //Initialize commands
-            ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            ShowDashBoardViewCommand = new ViewModelCommand(ExecuteShowDashBoardViewCommand);
             ShowPasswordsViewCommand = new ViewModelCommand(ExecuteShowPasswordsViewCommand);
             ShowUserSettingsViewCommand = new ViewModelCommand(ExecuteShowUserSettingsViewCommand);
             ShowUserAccountViewCommand = new ViewModelCommand(ExecuteShowUserAccountViewCommand);
 
             //Default View
-            ExecuteShowHomeViewCommand(null);
+            ExecuteShowDashBoardViewCommand(null);
 
             LoadCurrentUserData();
         }
@@ -121,9 +121,9 @@ namespace PasswordManager.MVVM.ViewModels
             Icon = IconChar.Key;
         }
 
-        private void ExecuteShowHomeViewCommand(object obj)
+        private void ExecuteShowDashBoardViewCommand(object obj)
         {
-            CurrentChildView = new HomeViewModel();
+            CurrentChildView = new DashBoardViewModel();
             Caption = "Dashboard";
             Icon = IconChar.Home;
         }
